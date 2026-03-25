@@ -1,0 +1,835 @@
+<!DOCTYPE html>  <html>  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reload93_Store</title>  <style>  
+body{  
+    font-family:'Segoe UI';  
+    background: linear-gradient(135deg,#0f5bd3,#6a11cb);  
+    margin:0;  
+    padding:20px;  
+}  
+    .header{
+    position:sticky;
+    top:0;
+    z-index:999; 
+    
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    background: linear-gradient(90deg,#0f5bd3,#6a11cb);
+    padding:10px 15px;
+    border-radius:0 0 15px 15px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+.judul{
+    font-weight:bold;
+    font-size:18px;
+    color:white;
+    background: linear-gradient(90deg,#00f0ff,#ff00d4);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.logo-kiri{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+}
+
+.menu-kanan{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.logo-kanan{
+    width:45px;
+    height:45px;
+    border-radius:10px;
+}
+
+.admin-btn{
+    background:#fff;
+    color:#333;
+    font-size:16px;
+    padding:5px 10px;
+}
+/* GRID */  
+.grid{  
+    display:grid;  
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));  
+    gap:15px;  
+}  
+  
+/* CARD */  
+.card{  
+    background:white;  
+    padding:15px;  
+    border-radius:15px;  
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);  
+    cursor:pointer;  
+    position:relative;  
+  
+    opacity:0;  
+    transform:translateY(20px);  
+    animation:fadeUp 0.4s ease forwards;  
+    transition:0.3s;  
+}  
+  .glow-text{
+    background: linear-gradient(100deg, #00c10f, #10e5de);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(0,200,255,0.8);
+}
+    .running-text{
+    width:100%;
+    overflow:hidden;
+    background:linear-gradient(90deg,#ff512f,#dd2476);
+    color:white;
+    padding:8px 0;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.running-content{
+    display:inline-block;
+    white-space:nowrap;
+    padding-left:100%;
+    animation:jalan 25s linear infinite;
+}
+@keyframes jalan{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-100%);}
+}
+   .card:hover{  
+    transform:translateY(-5px) scale(1.03);  
+}  
+  
+.card:active{  
+    transform:scale(0.97);  
+}  
+  
+/* TEXT */  
+.title{font-weight:bold;}  
+.stock{font-size:12px;}  
+.habis{opacity:0.5;}  
+  
+/* BADGE */  
+.badge{  
+    position:absolute;  
+    top:10px;  
+    right:10px;  
+    color:white;  
+    font-size:11px;  
+    padding:5px 8px;  
+    border-radius:8px;  
+    font-weight:bold;  
+    font-style:italic;  
+    animation:blink 1.5s infinite, shake 2s infinite;  
+}  
+  
+.best{background:linear-gradient(90deg,#ff512f,#dd2476);}  
+.hot{background:linear-gradient(90deg,#f7971e,#ffd200);color:black;}  
+.promo{background:linear-gradient(90deg,#00c6ff,#0072ff);}  
+  
+/* HARGA */  
+.old-price{  
+    text-decoration:line-through;  
+    color:#999;  
+    font-size:12px;  
+}  
+.new-price{  
+    color:#6a11cb;  
+    font-weight:bold;  
+}  
+  
+/* POPUP */  
+.popup{  
+    position:fixed;  
+    top:0; left:0;  
+    width:100%; height:100%;  
+    background:rgba(0,0,0,0.7);  
+    display:none;  
+    justify-content:center;  
+    align-items:center;  
+}  
+  
+.popup-content{  
+    background:white;  
+    padding:20px;  
+    border-radius:15px;  
+    width:90%;  
+    max-width:400px;  
+}  
+  
+/* BUTTON */  
+button{  
+    padding:10px;  
+    border:none;  
+    border-radius:10px;  
+    background:linear-gradient(90deg,#0f5bd3,#6a11cb);  
+    color:white;  
+    cursor:pointer;  
+}  
+  
+/* ANIMASI */  
+@keyframes fadeUp{  
+    to{opacity:1;transform:translateY(0);}  
+}  
+  
+@keyframes blink{  
+    50%{opacity:0.6;}  
+}  
+  
+@keyframes shake{  
+    25%{transform:rotate(2deg);}  
+    75%{transform:rotate(-2deg);}  
+}  
+@keyframes pop{  
+0%{transform:scale(0.5);opacity:0;}  
+100%{transform:scale(1);opacity:1;}  
+}  
+  
+/* SHIMMER */  
+.skeleton{  
+    height:100px;  
+    border-radius:15px;  
+    background:linear-gradient(90deg,#eee 25%,#ddd 50%,#eee 75%);  
+    background-size:200% 100%;  
+    animation:shimmer 1.2s infinite;  
+}  
+  
+@keyframes shimmer{  
+    100%{background-position:-200% 0;}  
+}  
+    button{
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.05);}
+    100%{transform:scale(1);}
+}
+</style>  </head>  <body>  
+    <div class="header">
+    <img src="logo.png" class="logo-kiri">
+
+    <div class="judul">Reload93_Store</div>
+
+    <div class="menu-kanan">
+        <img src="Axisxl.png" class="logo-kanan">
+      </div>
+</div>
+    <div id="adminPanel" style="
+position:fixed;
+top:0;
+right:-300px;
+width:250px;
+height:100%;
+background:white;
+box-shadow:-5px 0 15px rgba(0,0,0,0.3);
+padding:20px;
+transition:0.3s;
+z-index:1000;
+">
+
+<h3>⚙️ Admin Menu</h3>
+
+<button onclick="resetStok()">Reset Stok</button>
+<br><br>
+<button onclick="resetPenjualan()">Reset Penjualan</button>
+<br><br>
+<button onclick="bukaEditProduk()">Edit Produk</button>
+<br><br>
+<button onclick="bukaKelolaStok()">Kelola Stok</button>
+        <br><br>
+<button onclick="backupData()">💾 Backup Stok</button>
+<br><br>
+<input type="file" id="restoreFile" style="display:none;" onchange="restoreData(this)">
+<button onclick="document.getElementById('restoreFile').click()">🔄 Restore Stok</button>
+<button onclick="toggleAdmin()">Tutup</button>
+ <button onclick="logoutAdmin()">Logout</button>
+</div>
+    <div class="running-text">
+    <div class="running-content">
+        🗣️ Selamat Datang di Reload93_Store🔥,⏰Kami Open Restok pagi Jam 07.00 - 09.00 WIB,🌇 Open Restok lagi sore Jam 16.00 WIB yaa!kadang ada jam Tambahan kok!!⚡ Stok terbatas, siapa cepat dia dapat!,💬 Order otomatis masuk ke WhatsApp.;
+    </div>
+</div>
+    <div style="
+background:white;
+padding:10px;
+border-radius:10px;
+margin-bottom:10px;
+text-align:center;
+font-size:13px;
+font-weight:bold;
+">
+✅ Transaksi Otomatis  
+⚡ Proses Cepat 
+🔒 Aman & Terpercaya
+</div>
+    <hr style="border:1px solid rgba(255,255,255,0.2);margin-bottom:15px;">
+ <input type="text" id="search" placeholder="Cari produk..." style="width:100%;padding:10px;border-radius:10px;margin-bottom:10px;">  <div style="display:flex;gap:10px;margin-bottom:15px;">  
+<button onclick="filterStatus('all')">Semua</button>  
+<button onclick="filterStatus('ready')">Ready</button>  
+<button onclick="filterStatus('habis')">Habis</button>  
+</div>  <div class="grid" id="produkContainer"></div>  <div class="popup" id="popup">  
+<div class="popup-content">     
+<h3 id="namaProduk"></h3>  
+<p id="hargaProduk"></p>  
+<div id="areaProduk"></div>  
+<input type="text" id="nomor" placeholder="Nomor tujuan" style="width:100%;margin:10px 0;padding:10px;">  
+<button onclick="beli()">BELI SEKARANG</button>  
+<br><br>  
+<button onclick="tutup()">Tutup</button>  
+</div>  
+</div>
+<div id="successPopup" style="  
+position:fixed;  
+top:0;left:0;  
+width:100%;height:100%;  
+background:rgba(0,0,0,0.6);  
+display:none;  
+justify-content:center;  
+align-items:center;  
+z-index:999;  
+">  
+<div style="  
+background:white;  
+padding:25px;  
+border-radius:15px;  
+text-align:center;  
+animation:pop 0.4s ease;  
+">    
+<h2 style="color:green;">✅ Order Berhasil!</h2>
+<p>Pesanan kamu sudah dikirim ke WhatsApp</p>  <button onclick="tutupSuccess()">OK</button>
+</div>
+</div>    
+ <div class="popup" id="stokPopup">
+  <div class="popup-content" style="max-height:80vh;overflow:auto;">
+    <h3>📦 Kelola Stok</h3>
+    <div id="stokList"></div>
+    <br>
+    <button onclick="simpanStok()">Simpan</button>
+    <button onclick="tutupStok()">Tutup</button>
+  </div>
+</div>
+    <div class="popup" id="editPopup">
+  <div class="popup-content" style="max-height:80vh;overflow:auto;">
+    <h3>✏️ Edit Produk</h3>
+    <div id="editList"></div>
+    <br>
+    <button onclick="simpanEditProduk()">Simpan Perubahan</button>
+    <button onclick="tutupEditProduk()">Tutup</button>
+  </div>
+</div>
+    <button onclick="bukaRiwayat()">Riwayat Pembelian</button>
+<!-- Popup Riwayat -->
+<div id="riwayatPopup" class="popup">
+  <div class="popup-content" style="max-height:80vh;overflow:auto;">
+    <h3>📜 Riwayat Pembelian</h3>
+    <div id="riwayatList"></div>
+    <br>
+    <button onclick="tutupRiwayat()">Tutup</button>
+  </div>
+</div>
+   <script> 
+let isAdmin = localStorage.getItem("admin") === "true";
+let riwayat = JSON.parse(localStorage.getItem("riwayat") || "[]");    
+let stokData = JSON.parse(localStorage.getItem("stokData") || "{}");
+ 
+    
+    let notif = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
+document.body.addEventListener("click", function(){
+    notif.play().then(()=>{
+        notif.pause();
+        notif.currentTime = 0;
+    }).catch(()=>{
+        console.log("Suara OGG tidak bisa jalan, gunakan alternatif!");
+        notif = new Audio("https://cdn.pixabay.com/download/audio/2022/01/13/audio_1f9c50098f.mp3");
+        notif.play().then(()=>{notif.pause(); notif.currentTime=0;}).catch(()=>{});
+    });
+}, { once:true });
+
+    let penjualan = JSON.parse(localStorage.getItem("penjualan") || "{}");  
+function formatRupiah(angka){  
+    return angka.toLocaleString("id-ID");  
+}  
+let produk = [  
+  
+/* ================= FLEXMAX ================= */  
+{kategori:"FLEXMAX", nama:"Flexmax 7GB", harga:34834, stok:0, kode:"FMX7", area:[]},  
+{kategori:"FLEXMAX", nama:"Flexmax 10GB", harga:38824, stok:0, kode:"FMX10", area:[]},  
+{kategori:"FLEXMAX", nama:"Flexmax 16GB", harga:48307, stok:0, kode:"FMX16", area:[]},  
+{kategori:"FLEXMAX", nama:"Flexmax 23GB", harga:57788, stok:0, kode:"FMX23", area:[]},  
+{kategori:"FLEXMAX", nama:"Flexmax 31GB", harga:66770, stok:0, kode:"FMX31", area:[]},  
+{kategori:"FLEXMAX", nama:"Flexmax 40GB", harga:75752, stok:0, kode:"FMX40", area:[]},  
+{kategori:"FLEXMAX", nama:"Flexmax 50GB", harga:84732, stok:0, kode:"FMX50", area:["Utama 12GB","TikTok 18GB","Youtube 18GB","Malam 24GB"], label:"BEST"},  
+{kategori:"FLEXMAX", nama:"Flexmax 65GB", harga:94612, stok:0, kode:"FMX65", area:[]},  
+{kategori:"FLEXMAX", nama:"Flexmax 100GB", harga:120562,hargaCoret:145000, stok:0, kode:"FMX100", area:[]},  
+{kategori:"FLEXMAX", nama:"Flexmax 150GB", harga:144512, stok:0, kode:"FMX150", area:[  
+"Area1: 75GB",  
+"Area2: 75GB + 6GB",  
+"Area3: 75GB + 9GB",  
+"Area4: 75GB + 15GB"  
+]},  
+  
+/* ================= CIRCLE ================= */  
+{kategori:"CIRCLE", nama:"Circle 5-9GB", harga:16000, stok:0, kode:"XCLP5", area:["5-9GB Nasional"]},  
+{kategori:"CIRCLE", nama:"Circle 10-14GB", harga:21000, stok:0, kode:"XCLP10", area:["10-14GB Nasional"]},  
+{kategori:"CIRCLE", nama:"Circle 15-19GB", harga:26000, stok:0, kode:"XCLP15", area:["15-19GB Nasional"]},  
+{kategori:"CIRCLE", nama:"Circle 20-24GB", harga:31000, stok:0, kode:"XCLP20", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 25-29GB", harga:36000, stok:0, kode:"XCLP25", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 30-34GB", harga:41000, stok:0, kode:"XCLP30", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 35-39GB", harga:46000, stok:0, kode:"XCLP35", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 40-44GB", harga:51000, stok:0, kode:"XCLP40", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 45-49GB", harga:56000, stok:0, kode:"XCLP45", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 50-54GB", harga:61000, stok:0, kode:"XCLP50", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 55-59GB", harga:66000, stok:0, kode:"XCLP55", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 60-64GB", harga:71000, stok:0, kode:"XCLP60", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 65-69GB", harga:76000, stok:0, kode:"XCLP65", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 70-74GB", harga:81000, stok:0, kode:"XCLP70", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 75-79GB", harga:86000, stok:0, kode:"XCLP75", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 80-84GB", harga:91000, stok:0, kode:"XCLP80", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 85-89GB", harga:96000, stok:0, kode:"XCLP85", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 90-94GB", harga:101000, stok:0, kode:"XCLP90", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 95-99GB", harga:106000, stok:0, kode:"XCLP95", area:[]},  
+{kategori:"CIRCLE", nama:"Circle 100-104GB", harga:111000, stok:0, kode:"XCLP100", area:[]},  
+  
+/* ================= XLA ================= */  
+{kategori:"XLA", nama:"SuperMini", harga:43000, stok:0, kode:"XLA14", area:["Area1 13-15GB","Area2 15-17GB","Area3 20-22GB","Area4 30-32GB"]},  
+{kategori:"XLA", nama:"Mini", harga:58000, stok:0, kode:"XLA32", area:["Area1 31-33GB","Area2 33-35GB","Area3 38-40GB","Area4 48-50GB"]},  
+{kategori:"XLA", nama:"Big", harga:62000, stok:0, kode:"XLA39", area:["Area1 38-40GB","Area2 40-42GB","Area3 45-47GB","Area4 55-57GB"]},  
+{kategori:"XLA", nama:"Jumbo V2", harga:73000, stok:0, kode:"XLA51", area:["Area1 50-52GB","Area2 52-54GB","Area357-59GB","Area4 67-69GB"]},  
+{kategori:"XLA", nama:"MegaBig", harga:100000, stok:0, kode:"XLA89", area:["Area1 88-90GB","Area2 90-92GB","Area3 95-97GB","Area4 105-107GB"], label:"BEST"},  
+{kategori:"XLA", nama:"Jumbo", harga:99000, stok:0, kode:"XLA65", area:["Area1 65GB","Area2 70GB","Area3 83GB","Area4 123GB"]},  
+  
+/* ================= XDA ================= */  
+{kategori:"XDA", nama:"XDA13", harga:43000, stok:0, kode:"XDA13", area:["Area1: 13GB","Area2: 15GB","Area3: 20GB","Area4: 30GB"]},  
+{kategori:"XDA", nama:"XDA19", harga:47000, stok:0, kode:"XDA19", area:["Area1: 19GB","Area2: 21GB","Area3: 26GB","Area4: 36GB"]},  
+{kategori:"XDA", nama:"XDA25", harga:52000, stok:0, kode:"XDA25", area:["Area1: 25GB","Area2: 27GB","Area3: 32GB","Area4: 42GB"]},  
+{kategori:"XDA", nama:"XDA27", harga:71500, stok:0, kode:"XDA27", area:["Area1: 26GB","Area2: 30GB","Area3: 44GB","Area4: 83GB"]},  
+{kategori:"XDA", nama:"XDA31", harga:57000, stok:0, kode:"XDA31", area:["Area1: 31GB","Area2: 33GB","Area3: 38GB","Area4: 48GB"]},  
+{kategori:"XDA", nama:"XDA34", harga:72000, stok:0, kode:"XDA34", area:["Area1: 33GB","Area2: 36GB","Area3: 47GB","Area4: 71GB"]},  
+{kategori:"XDA", nama:"XDA38", harga:62000, stok:0, kode:"XDA38", area:["Area1: 38GB","Area2: 40GB","Area3: 45GB","Area4: 55GB"]},  
+{kategori:"XDA", nama:"XDA40", harga:76000, stok:0, kode:"XDA40", area:["Area1: 40GB","Area2: 42GB","Area3: 53GB","Area4: 77GB"]},  
+{kategori:"XDA", nama:"XDA47", harga:68500, stok:0, kode:"XDA47", area:["Area1: 47GB","Area2: 49GB","Area3: 54GB","Area4: 64GB"]},  
+{kategori:"XDA", nama:"XDA50", harga:73000, stok:0, kode:"XDA50", area:["Area1: 50GB","Area2: 52GB","Area3: 57GB","Area4: 67GB"]},  
+{kategori:"XDA", nama:"XDA55", harga:76000, stok:0, kode:"XDA55", area:["Area1: 54GB","Area2: 56GB","Area3: 61GB","Area4: 71GB"]},  
+{kategori:"XDA", nama:"XDA63", harga:83000, stok:0, kode:"XDA63", area:["Area1: 63GB","Area2: 65GB","Area3: 70GB","Area4: 80GB"]},  
+{kategori:"XDA", nama:"XDA64", harga:95000, stok:0, kode:"XDA64", area:["Area1: 65GB","Area2: 70GB","Area3: 83GB","Area4: 123GB"]},  
+{kategori:"XDA", nama:"XDA76", harga:90000, stok:0, kode:"XDA76", area:["Area1: 76GB","Area2: 78GB","Area3: 83GB","Area4: 93GB"]},  
+{kategori:"XDA", nama:"XDA78", harga:101000, stok:0, kode:"XDA78",area:["Area1: 78GB","Area2: 83GB","Area3: 96GB","Area4: 136GB"]},  
+{kategori:"XDA", nama:"XDA88", harga:100000, stok:0, kode:"XDA88",area:["Area1: 88GB","Area2: 90GB","Area3: 95GB","Area4: 105GB"]},  
+{kategori:"XDA", nama:"XDA105", harga:119500, stok:0, kode:"XDA105", area:[]},  
+{kategori:"XDA", nama:"XDA53", harga:79000, stok:0, kode:"XDA53", area:[]}  
+  ]  
+  produk.forEach(p => {
+    if(stokData[p.kode] !== undefined){
+        p.stok = stokData[p.kode];
+    }
+});
+let kategoriState = {};  
+let currentFilter = "all";  
+  
+let searchInput = document.getElementById("search");  
+searchInput.addEventListener("input", () => loadProduk(searchInput.value.toLowerCase()));  
+  
+function filterStatus(status){  
+    currentFilter = status;  
+    loadProduk(searchInput.value.toLowerCase());  
+}  
+  
+function loadProduk(keyword=""){  
+    let container = document.getElementById("produkContainer");  
+    container.innerHTML = "";  
+  
+    // shimmer  
+    for(let i=0;i<4;i++){  
+        let sk = document.createElement("div");  
+        sk.className = "skeleton";  
+        container.appendChild(sk);  
+    }  
+  
+    setTimeout(()=>{  
+  
+    container.innerHTML="";  
+    let lastKategori="";  
+  
+    // AUTO BEST SELLER  
+    let max=0, best=null;  
+    for(let k in penjualan){  
+        if(penjualan[k]>max){  
+            max=penjualan[k];  
+            best=k;  
+        }  
+    }  
+  
+    produk.forEach(p=>{  
+        if(p.auto) delete p.label;  
+        if(p.nama===best){  
+            p.label="BEST";  
+            p.auto=true;  
+        }  
+    });  
+  
+    produk.forEach((p,i)=>{  
+  
+        if(!p.nama.toLowerCase().includes(keyword) &&  
+           !p.kode.toLowerCase().includes(keyword)) return;  
+  
+        if(currentFilter==="ready" && p.stok<=0) return;  
+        if(currentFilter==="habis" && p.stok>0) return;  
+  
+        if(p.kategori!==lastKategori){  
+            let h=document.createElement("div");  
+            h.style.color="white";  
+            h.style.fontWeight="bold";  
+            h.style.marginTop="15px";  
+  
+            if(kategoriState[p.kategori]===undefined){  
+                kategoriState[p.kategori]=true;  
+            }  
+  
+            h.innerText=(kategoriState[p.kategori]?"▼ ":"▶ ")+p.kategori;  
+            h.onclick=()=>{  
+                kategoriState[p.kategori]=!kategoriState[p.kategori];  
+                loadProduk(keyword);  
+            };  
+  
+            container.appendChild(h);  
+            lastKategori=p.kategori;  
+        }  
+  
+        if(!kategoriState[p.kategori]) return;  
+  
+        let div=document.createElement("div");  
+        div.className="card";  
+        div.style.animationDelay=(i*0.05)+"s";  
+  
+        if(p.stok<=0) div.classList.add("habis");  
+  
+        div.innerHTML=`  
+        ${p.label ? `<div class="badge ${p.label.toLowerCase()}">⚡ ${p.label} SELLER</div>` : ""}  
+        <div class="title">${p.nama}</div>  
+        <div style="font-size:12px;color:#888">${p.kode}</div>  
+        ${p.hargaCoret ? `<div class="old-price">Rp ${formatRupiah(p.hargaCoret)}</div>` : ""}  
+        <div class="new-price">Rp ${formatRupiah(p.harga)}</div>  
+        <div class="stock">${p.stok<=0?"❌ Habis":"Stok: "+p.stok}</div>  
+        `;  
+  
+        if(p.stok>0){  
+            div.onclick=()=>openPopup(i);  
+        }  
+  
+        container.appendChild(div);  
+    });  
+  
+    },300);  
+}
+    let pressTimer;
+
+let header = document.querySelector(".header");
+
+// support HP (touch)
+header.addEventListener("touchstart", () => {
+    pressTimer = setTimeout(() => {
+        toggleAdmin();
+    }, 3000); // 3.0detik
+});
+
+header.addEventListener("touchend", () => {
+    clearTimeout(pressTimer);
+});
+
+// support laptop / PC
+header.addEventListener("mousedown", () => {
+    pressTimer = setTimeout(() => {
+        toggleAdmin();
+    }, 3000);
+});
+
+header.addEventListener("mouseup", () => {
+    clearTimeout(pressTimer);
+});
+let selected=null;  
+  
+function openPopup(i){  
+    selected=produk[i];  
+    document.getElementById("popup").style.display="flex";  
+    document.getElementById("namaProduk").innerText=selected.nama;  
+    document.getElementById("hargaProduk").innerText="Rp "+ formatRupiah(selected.harga);  
+  let areaHTML = "";  
+    if(selected.area.length === 0){
+        areaHTML = "<i>Tidak ada detail area</i>";
+    } else {
+        selected.area.forEach(a=>{  
+            areaHTML += "<div>• " + a + "</div>";  
+        });  
+    }
+    document.getElementById("areaProduk").innerHTML=areaHTML;  
+}
+function tutup(){  
+    document.getElementById("popup").style.display="none";  
+}  
+function copyOrder(text){  
+    navigator.clipboard.writeText(text).catch(()=>{  
+        let textarea = document.createElement("textarea");  
+        textarea.value = text;  
+        document.body.appendChild(textarea);  
+        textarea.select();  
+        document.execCommand("copy");  
+        document.body.removeChild(textarea);  
+    });  
+    alert("Order berhasil di-copy!");  
+}  
+function beli(){
+    let nomor=document.getElementById("nomor").value;  
+    if(!nomor) return alert("Isi nomor dulu bro!");
+      
+    let orderID = "INV-" + Date.now();  
+    let waktu = new Date().toLocaleString("id-ID");  
+  
+    let order = {
+        id: orderID,
+        produk: selected.nama,
+        kode: selected.kode,
+        harga: selected.harga,
+        nomor: nomor,
+        waktu: waktu
+    };
+
+    simpanRiwayat(order); // simpan ke localStorage
+  
+    // Order ke WA
+    let pesan = `Halo Admin
+Saya mau order:
+
+ID Order: ${orderID}
+Produk  : ${selected.nama}
+Kode    : ${selected.kode}
+Harga   : Rp ${formatRupiah(selected.harga)}
+Nomor   : ${nomor}
+
+Waktu  : ${waktu}
+Terima kasih 🙏`;  
+
+    notif.currentTime = 0;
+    notif.play();
+    copyOrder(pesan);
+    let url = "https://wa.me/6287881160222?text=" + encodeURIComponent(pesan);  
+    window.location.href = url;
+      
+    // Update stok
+    selected.stok--;  
+    stokData[selected.kode] = selected.stok;
+    localStorage.setItem("stokData", JSON.stringify(stokData));
+    
+    // Update penjualan
+    if(!penjualan[selected.nama]) penjualan[selected.nama]=0;  
+    penjualan[selected.nama]++;  
+    localStorage.setItem("penjualan", JSON.stringify(penjualan));  
+  
+    loadProduk();  
+    tutup();
+    setTimeout(()=>{ showSuccess(); }, 200);
+}
+function showSuccess(){  
+    document.getElementById("successPopup").style.display="flex";  
+}  
+  
+function tutupSuccess(){  
+    document.getElementById("successPopup").style.display="none";  
+}  
+loadProduk();  
+    function toggleAdmin(){
+    if(!isAdmin){
+        let pass = prompt("Masukkan password admin:");
+        if(pass !== "Sunuaji93") return alert("Password salah!");
+        
+        isAdmin = true;
+        localStorage.setItem("admin","true");
+    }
+    let panel = document.getElementById("adminPanel");
+
+    if(panel.style.right === "0px"){
+        panel.style.right = "-300px";
+    }else{
+        panel.style.right = "0px";
+    }
+}
+function logoutAdmin(){
+    localStorage.removeItem("admin");
+    isAdmin = false;
+    alert("Logout admin!");
+}
+    
+function resetStok(){
+    if(confirm("Yakin mau reset semua stok ke 0?")){
+        produk.forEach(p => {
+            p.stok = 0;
+            stokData[p.kode] = 0;
+        });
+
+        localStorage.setItem("stokData", JSON.stringify(stokData));
+        loadProduk();
+        alert("Stok direset ke 0!");
+    }
+}
+function resetPenjualan(){
+    localStorage.removeItem("penjualan");
+    penjualan = {};
+    loadProduk();
+    alert("Penjualan direset!");
+}
+    function bukaEditProduk(){
+    document.getElementById("editPopup").style.display = "flex";
+    let html = "";
+    produk.forEach((p,i)=>{
+        html += `
+        <div style="margin-bottom:15px;border-bottom:1px solid #ddd;padding-bottom:10px;">
+            <b>${p.nama}</b><br>
+            Nama: <input type="text" id="edit_nama_${i}" value="${p.nama}" style="width:100%;margin:3px 0;"><br>
+            Harga: <input type="number" id="edit_harga_${i}" value="${p.harga}" style="width:100%;margin:3px 0;"><br>
+            Harga Coret: <input type="number" id="edit_hargaCoret_${i}" value="${p.hargaCoret || ''}" style="width:100%;margin:3px 0;"><br>
+            Area (pisah dengan koma): <input type="text" id="edit_area_${i}" value="${p.area.join(', ')}" style="width:100%;margin:3px 0;"><br>
+            Label:
+            <select id="edit_label_${i}" style="width:100%;margin:3px 0;">
+                <option value="" ${!p.label ? "selected" : ""}>Kosong</option>
+                <option value="BEST" ${p.label==="BEST" ? "selected" : ""}>BEST</option>
+                <option value="HOT" ${p.label==="HOT" ? "selected" : ""}>HOT</option>
+                <option value="PROMO" ${p.label==="PROMO" ? "selected" : ""}>PROMO</option>
+            </select>
+        </div>
+        `;
+    });
+    document.getElementById("editList").innerHTML = html;
+}
+
+function tutupEditProduk(){
+    document.getElementById("editPopup").style.display = "none";
+}
+
+function simpanEditProduk(){
+    produk.forEach((p,i)=>{
+        p.nama = document.getElementById("edit_nama_"+i).value;
+        p.harga = parseInt(document.getElementById("edit_harga_"+i).value) || 0;
+        let hc = document.getElementById("edit_hargaCoret_"+i).value;
+        p.hargaCoret = hc ? parseInt(hc) : undefined;
+        let areaVal = document.getElementById("edit_area_"+i).value;
+        p.area = areaVal ? areaVal.split(',').map(a=>a.trim()) : [];
+        let lbl = document.getElementById("edit_label_"+i).value;
+        p.label = lbl ? lbl : undefined;
+    });
+    localStorage.setItem("stokData", JSON.stringify(stokData)); // stok tetap
+    loadProduk();
+    alert("Perubahan produk berhasil disimpan!");
+    tutupEditProduk();
+}
+    function simpanRiwayat(order){
+    riwayat.push(order);
+    localStorage.setItem("riwayat", JSON.stringify(riwayat));
+}
+ function bukaKelolaStok(){
+    document.getElementById("stokPopup").style.display = "flex";
+
+    let html = "";
+
+    produk.forEach((p,i)=>{
+        html += `
+        <div style="margin-bottom:10px">
+            <b>${p.nama}</b><br>
+            <input type="number" value="${p.stok}" id="stok_${i}" style="width:100%;padding:5px;">
+        </div>
+        `;
+    });
+
+    document.getElementById("stokList").innerHTML = html;
+}
+
+function tutupStok(){
+    document.getElementById("stokPopup").style.display = "none";
+}
+
+function simpanStok(){
+    produk.forEach((p,i)=>{
+        let val = document.getElementById("stok_"+i).value;
+        p.stok = parseInt(val) || 0;
+
+        stokData[p.kode] = p.stok;
+    });
+
+    localStorage.setItem("stokData", JSON.stringify(stokData));
+
+    loadProduk();
+    alert("Stok berhasil disimpan!");
+    tutupStok();
+}
+    // Backup Stok & Penjualan
+function backupData(){
+    const data = {
+        stok: stokData,
+        penjualan: penjualan
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `backup_reload93_${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    alert("Backup berhasil! File tersimpan di perangkatmu.");
+}
+
+// Restore Stok & Penjualan
+function restoreData(input){
+    const file = input.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e){
+        try {
+            const data = JSON.parse(e.target.result);
+            stokData = data.stok || {};
+            penjualan = data.penjualan || {};
+            localStorage.setItem("stokData", JSON.stringify(stokData));
+            localStorage.setItem("penjualan", JSON.stringify(penjualan));
+            loadProduk();
+            alert("Restore berhasil! Stok & penjualan diperbarui.");
+        } catch(err){
+            alert("File tidak valid!");
+        }
+    }
+    reader.readAsText(file);
+}
+    // Popup riwayat
+function bukaRiwayat(){
+    document.getElementById("riwayatPopup").style.display="flex";
+    let html = "<table style='width:100%;border-collapse:collapse'>";
+    html += "<tr><th style='border-bottom:1px solid #ccc;padding:5px'>ID</th><th style='border-bottom:1px solid #ccc;padding:5px'>Produk</th><th style='border-bottom:1px solid #ccc;padding:5px'>Kode</th><th style='border-bottom:1px solid #ccc;padding:5px'>Harga</th><th style='border-bottom:1px solid #ccc;padding:5px'>Nomor</th><th style='border-bottom:1px solid #ccc;padding:5px'>Waktu</th></tr>";
+    riwayat.forEach(r=>{
+        html += `<tr>
+                    <td style='padding:5px'>${r.id}</td>
+                    <td style='padding:5px'>${r.produk}</td>
+                    <td style='padding:5px'>${r.kode}</td>
+                    <td style='padding:5px'>Rp ${formatRupiah(r.harga)}</td>
+                    <td style='padding:5px'>${r.nomor}</td>
+                    <td style='padding:5px'>${r.waktu}</td>
+                 </tr>`;
+    });
+    html += "</table>";
+    document.getElementById("riwayatList").innerHTML = html;
+}
+
+function tutupRiwayat(){
+    document.getElementById("riwayatPopup").style.display="none";
+}
+</script> 
+</body>  
+</html>
